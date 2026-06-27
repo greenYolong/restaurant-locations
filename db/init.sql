@@ -8,5 +8,15 @@ cuisine_type VARCHAR(50) NOT NULL,
 phone_number VARCHAR(20),
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT valid_latitude CHECK (latitude &gt;= -90 AND latitude &lt;= 90),
-CONSTRAINT valid_longitude CHECK (longitude &gt;= -180 AND longitude &lt;= 180)
+CONSTRAINT valid_longitude CHECK (longitude &gt;= -180 AND longitude &lt;= 180),
+CONSTRAINT valid_cuisine_type CHECK (
+    cuisine_type IN (
+      'Française',
+      'Italienne',
+      'Asiatique',
+      'Américaine',
+      'Méditerranéenne',
+      'Autre'
+    )
+  )
 );
