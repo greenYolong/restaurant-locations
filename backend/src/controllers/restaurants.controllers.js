@@ -7,39 +7,56 @@ const { validateRestaurant } = require('../validators/restaurants.validators.js'
 // We use async functions to handle async operations (database queries) and return the results to the client in a structured format (JSON) with appropriate HTTP status codes.
 
 // Controller function to handle the retrieval of all restaurants
-async function getAllRestaurants(req, res) {
-  const restaurants = await restaurantsService.getAllRestaurants();
-  res.status(200).json(restaurants);
+async function getAllRestaurants(req, res, next) {
+  try {
+    const restaurants = await restaurantsService.getAllRestaurants();
+    res.status(200).json(restaurants);
+  } catch(error){
+    next(error); // Pass the error to the error handling middleware
+  }
 }
 
 // Controller function to handle the creation of a new restaurant
-async function createRestaurant(req, res) {
-  const validation = validateRestaurant(req.body);
+async function createRestaurant(req, res, next) {
+  try {
 
-  // If the validation fails, return a 400 Bad Request response with the validation errors
-  if (!validation.valid) {
-    return res.status(400).json({
-      error: 'Validation error',
-      details: validation.errors,
-    });
+    const validation = validateRestaurant(req.body);
+    
+    // If the validation fails, return a 400 Bad Request response with the validation errors
+    if (!validation.valid) {
+      return res.status(400).json({
+        error: 'Validation error',
+        details: validation.errors,
+      });
+    }
+    
+    const restaurant = await restaurantsService.createRestaurant(req.body);
+    res.status(201).json(restaurant);
+  } catch(error) {
+    next(error); // Pass the error to the error handling middleware
   }
-
-  const restaurant = await restaurantsService.createRestaurant(req.body);
-  res.status(201).json(restaurant);
 }
 
 // Controller function to handle searching for restaurants based on a query parameter
-async function searchRestaurants(req, res) {
-  const { q = '' } = req.query;
-  const restaurants = await restaurantsService.searchRestaurants(q);
-  res.status(200).json(restaurants);
+async function searchRestaurants(req, res, next ) {
+  try {
+    const { q = '' } = req.query;
+    const restaurants = await restaurantsService.searchRestaurants(q);
+    res.status(200).json(restaurants);
+  } catch(error) {
+    next(error); // Pass the error to the error handling middleware
+  }
 }
 
 // Controller function to handle filtering restaurants based on a query parameter
-async function filterRestaurants(req, res) {
-  const { cuisine = '' } = req.query;
-  const restaurants = await restaurantsService.filterRestaurants(cuisine);
-  res.status(200).json(restaurants);
+async function filterRestaurants(req, res, next) {
+  try {
+    const { cuisine = '' } = req.query;
+    const restaurants = await restaurantsService.filterRestaurants(cuisine);
+    res.status(200).json(restaurants);
+  } catch(error) {
+    next(error); // Pass the error to the error handling middleware
+  }
 }
 
 // Export the controller functions to be used in the routes file (restaurants.routes.js) for handling restaurant-related requests
