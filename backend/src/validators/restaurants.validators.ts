@@ -1,2 +1,0 @@
-// This file contains validation logic for restaurant-related data, ensuring that incoming requests meet the required criteria before being processed by the service layer
-//  It defines validation rules for restaurant creation, update, and other operations, helping to maintain data integrity and prevent invalid data from being stored in the database.

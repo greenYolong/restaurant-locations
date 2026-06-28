@@ -1,2 +1,0 @@
-// This file receives HTTP requests related to restaurants and delegates the handling of those requests to the appropriate functions in the restaurant controller
-// It also sends back the appropriate HTTP responses to the client based on the results of the controller functions

@@ -1,1 +1,0 @@
-// This file contains the business logic as well as the access to the database
