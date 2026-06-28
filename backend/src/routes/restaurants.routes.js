@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 
-const restaurantsController = require('../controllers/restaurants.controller');
+const restaurantsController = require('../controllers/restaurants.controllers.js');
 
 router.get('/', restaurantsController.getAllRestaurants);
 router.post('/', restaurantsController.createRestaurant);
