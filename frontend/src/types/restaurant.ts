@@ -31,3 +31,8 @@ export interface RestaurantFormState {
 }
 
 export type RestaurantErrors = Record<RestaurantField, string>;
+
+export interface RestaurantFilters {
+  search: string;
+  cuisine: string;
+}
