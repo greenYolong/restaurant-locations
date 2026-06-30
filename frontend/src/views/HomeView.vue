@@ -1,19 +1,45 @@
 <!-- This file is the main page for the application -->
 
 <template>
-  <main class="home-view">
-    <h1>Gestion des restaurants</h1>
+  <main class="page-shell">
+    <section class="app-card">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Restaurant locations</p>
+                <h1>Gestion des restaurants</h1>
+                <p class="page-subtitle">
+                    Consultez la liste, filtrez si nécessaire, puis ajoutez un restaurant en un clic.
+                </p>
+            </div>
+            <div class="header-actions">
+          <button class="btn btn-ghost" type="button" @click="showFilters = !showFilters">
+            {{ showFilters ? 'Masquer les filtres' : 'Afficher les filtres' }}
+          </button>
+          <button class="btn btn-primary" type="button" @click="showForm = true">
+            Ajouter un restaurant
+          </button>
+        </div>
+        </header>
 
-    <!-- Form for adding a new restaurant and listening to the submission event -->
-    <RestaurantForm @submit-restaurant="handleCreateRestaurant" />
+        <section v-if="showFilters" class="section-block">
+            <RestaurantFilters
+            v-if="showFilters"
+            :filters="filters"
+            @update:search="handleSearchUpdate"
+            @update:cuisine="handleCuisineUpdate"
+            />
+        </section>
 
-    <RestaurantFilters
-      :filters="filters"
-      @update:search="handleSearchUpdate"
-      @update:cuisine="handleCuisineUpdate"
+        <section class="section-block">
+            <RestaurantList :restaurants="restaurants"/>
+        </section>
+    </section>
+
+    <RestaurantForm
+    v-if="showForm"
+    @submit-restaurant="handleCreateRestaurant"
+    @close="showForm = false"
     />
-
-    <RestaurantList :restaurants="restaurants" />
   </main>
 </template>
 
@@ -30,6 +56,8 @@ const filters = reactive<FiltersState>({
   search: '',
   cuisine: '',
 });
+const showFilters = ref(false);
+const showForm = ref(false);
 
 async function loadRestaurants() {
   restaurants.value = await getRestaurants();
@@ -85,11 +113,3 @@ async function handleCuisineUpdate(value: string) {
 
 onMounted(loadRestaurants);
 </script>
-
-<style scoped>
-.home-view {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-</style>
