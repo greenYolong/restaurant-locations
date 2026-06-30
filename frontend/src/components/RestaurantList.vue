@@ -18,7 +18,12 @@
       <article v-for="restaurant in restaurants" :key="restaurant.id" class="restaurant-card">
         <div class="restaurant-top">
           <h3>{{ restaurant.name }}</h3>
-          <span class="cuisine-badge">{{ restaurant.cuisine_type }}</span>
+          <span class="cuisine-badge">
+            <span class="cuisine-emoji" aria-hidden="true">
+            {{ getCuisineEmoji(restaurant.cuisine_type) }}
+            </span>
+            <span>{{ restaurant.cuisine_type }}</span>
+          </span>
         </div>
 
         <div class="info-list">
@@ -50,6 +55,19 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const cuisineEmojis: Record<string, string> = {
+  Française: '🥖',
+  Italienne: '🍝',
+  Asiatique: '🍜',
+  Américaine: '🍔',
+  Méditerranéenne: '🫒',
+  Autre: '🍽️',
+};
+
+function getCuisineEmoji(cuisine: string): string {
+  return cuisineEmojis[cuisine] || '🍽️';
+}
 </script>
 
 <style scoped>
@@ -124,6 +142,11 @@ defineProps<Props>();
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.cuisine-emoji {
+  font-size: 1rem;
+  line-height: 1;
 }
 
 @media (max-width: 560px) {

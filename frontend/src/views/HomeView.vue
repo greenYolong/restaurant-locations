@@ -67,6 +67,8 @@ async function loadRestaurants() {
 async function handleCreateRestaurant(payload: RestaurantPayload) {
   try {
     const createdRestaurant = await createRestaurant(payload);
+    restaurants.value.unshift(createdRestaurant);
+    showForm.value = false;
     console.log('Restaurant créé :', createdRestaurant);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Erreur inconnue';
@@ -74,6 +76,7 @@ async function handleCreateRestaurant(payload: RestaurantPayload) {
   }
 }
 
+// Function to handle the search update by filtering the restaurants based on the search and cuisine values
 async function handleSearchUpdate(value: string) {
   filters.search = value;
 
@@ -95,6 +98,7 @@ async function handleSearchUpdate(value: string) {
   await loadRestaurants();
 }
 
+// Function to handle the cuisine update by filtering the restaurants based on the search and cuisine values
 async function handleCuisineUpdate(value: string) {
   filters.cuisine = value;
 
